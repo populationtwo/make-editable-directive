@@ -1,0 +1,7 @@
+<div class="card">
+	<div class="content" ng-transclude="" contenteditable="{{isEditable}}" ng-class="{editActive: isEditable}">
+	</div>
+	<div class="buttons">
+		<button ng-click="edit()"><span ng-hide="isEditable">Edit</span><span ng-if="isEditable">Save</span></button>
+	</div>
+</div>
