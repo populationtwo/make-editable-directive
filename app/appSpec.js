@@ -1,39 +1,38 @@
-describe('makeEditable', function() {
-    var scope,
-        compiled,
-        element,
-        html,
-        editableContent;
-    beforeEach(module('makeEditableApp'));
-    beforeEach(module('makeEditableTemplate.html'));
-    beforeEach(inject(function($rootScope, $compile) {
-        editableContent = '<p>Content that will become editable when the directive rendered.</p>';
-        html = '';
-        html += '<div make-editable>';
-        html += editableContent;
-        html += '</div>'
-       scope = $rootScope.$new();
-        compiled = $compile(html)
-        element = compiled(scope);
-        scope.$digest();
-    }));
+describe( 'makeEditable', function () {
+	var scope,
+		element,
+		html,
+		elem,
+		editableContent;
+	beforeEach( module( 'makeEditableApp' ) );
+	beforeEach( module( 'makeEditableTemplate.html' ) );
+	beforeEach( inject( function ($rootScope, $compile) {
+		elem = angular.element(
+			'<div make-editable>' +
+			editableContent +
+			'</div>'
+		)
 
-    it('should render the element correctly', function(){
-
-            console.log(element.find('div.card'));
-
-        // expect(element.find('div.card').length).toBe(1);
-
-// http://fdietz.github.io/recipes-with-angular-js/directives/testing-directives.html
-    })
+		scope = $rootScope;
+		$compile( elem )( scope );
+		scope.$digest();
 
 
-//     '<div make-editable="" class="ng-scope"><div class="card">
-//     <div class="content" ng-transclude="" contenteditable="false" ng-class="{editActive: isEditable}">
-//                 <p class="ng-scope">Content that will become editable when the directive rendered.</p>
-//             </div>
-//     <div class="buttons">
-//         <button ng-click="edit()"><span ng-hide="isEditable" class="">Edit</span><!-- ngIf: isEditable --></button>
-//     </div>
-// </div></div>'
-})
+	} ) );
+
+	it( 'should render the element correctly', function () {
+		var card = elem[0].querySelectorAll( '.card' ),
+			content = elem[0].querySelectorAll( '.content' ),
+			buttons = elem[0].querySelectorAll( '.buttons' );
+
+		expect( card.length ).toBe( 1 ); // check if it has .card class
+		expect( content.length ).toBe( 1 ); // check if it has .content class
+		expect( elem.find( content ).attr( 'contenteditable' ) ).toBeFalsy(); // check if contenteditable attribute is false
+		expect( buttons.length ).toBe( 1 ); // check if it has .buttons class
+		expect( elem.find( 'button' ).attr( 'ng-click' ) ).toBeTruthy();
+		expect( elem.find( 'span' ).attr( 'ng-hide' ) ).toBeFalsy();
+
+	} );
+
+
+} )
